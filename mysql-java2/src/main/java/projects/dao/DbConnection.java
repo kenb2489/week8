@@ -6,25 +6,23 @@ import java.sql.SQLException;
 import projects.exception.DbException;
 
 public class DbConnection {
-  private static final String SCHEMA = "recipes";
-  private static final String USER = "recipes";
-  private static final String PASSWORD = "recipes";
-  private static final String HOST = "localhost";
-  private static final int PORT = 3306;
-  
+  private static String HOST = "localhost";
+  private static String PASSWORD = "projects";
+  private static int PORT = 3306;
+  private static String SCHEMA = "projects";
+  private static String USER = "projects";
+
   public static Connection getConnection() {
-    String url = 
-        String.format("jdbc:mysql://%s:%d/%s?user=%s&password=%s&useSSL=false", 
-                        HOST, PORT, SCHEMA, USER, PASSWORD);
-    
-    System.out.println("Connecting with url=" + url);
-    
+    String uri = String.format("jdbc:mysql://%s:%d/%s?user=%s&password=%s", HOST, PORT, SCHEMA,
+        USER, PASSWORD);
+
     try {
-      Connection conn = DriverManager.getConnection(url);
-      System.out.println("sucessfully obtained connection");
+      Connection conn = DriverManager.getConnection(uri);
+      System.out.println("Connection to schema '" + SCHEMA + "' is successful.");
       return conn;
     } catch (SQLException e) {
-      throw new DbException(e); 
-    }  
+      System.out.println("Unable to get connection at " + uri);
+      throw new DbException("Unable to get connection at \" + uri");
+    }
   }
 }
